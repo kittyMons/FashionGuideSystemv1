@@ -121,5 +121,5 @@ if uploaded_file:
         if response:
             st.markdown('<div class="response-section">', unsafe_allow_html=True)
             st.markdown('<h2>Here\'s some styling advice based on your image and occasion:</h2>', unsafe_allow_html=True)
-            st.write(response.text)
+            st.markdown(f'<div>{response.text}</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
