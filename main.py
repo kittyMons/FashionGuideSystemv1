@@ -1,6 +1,7 @@
 import streamlit as st
 import pathlib as Path
 import google.generativeai as genai
+import base64  # Import the base64 module for encoding
 
 # Configure the API key (replace with your actual API key)
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
@@ -12,6 +13,19 @@ generation_config = {
     "top_k": 32,
     "max_output_tokens": 2048,  # Reduced for concise fashion advice
 }
+
+def encode_image(file):
+  """
+  This function encodes an uploaded image file to base64 format.
+
+  Args:
+    file: A Streamlit file uploader object containing the image data.
+
+  Returns:
+    A string containing the base64 encoded image data.
+  """
+  bytes_data = file.read()
+  return base64.b64encode(bytes_data).decode('utf-8')
 
 # Fashion Guider Prompt
 system_prompt = """
@@ -55,7 +69,9 @@ uploaded_file = st.file_uploader(
 if uploaded_file:
     image_data = []
     for image in uploaded_file:
-        image_data.append(image.getvalue())
+        # Encode image to base64 format using the encode_image function
+        encoded_image = encode_image(image)
+        image_data.append(encoded_image)
 
     submit_button = st.button("Get Styling Advice")
 
@@ -73,3 +89,4 @@ if uploaded_file:
             st.write(
                 "Disclaimer: This is for informational purposes only. Experiment and have fun expressing your unique style!"
             )
+
