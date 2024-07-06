@@ -1,5 +1,5 @@
 import streamlit as st
-import pathlib as Path
+from PIL import Image
 import google.generativeai as genai
 
 # Configure the API key
@@ -89,7 +89,9 @@ uploaded_file = st.file_uploader("Upload an image of your outfit or desired styl
 st.markdown('</div>', unsafe_allow_html=True)
 
 if uploaded_file:
-    st.image(uploaded_file, use_column_width=True)
+    image = Image.open(uploaded_file)
+    image = image.resize((400, 400))  # Resize image to 400x400 pixels
+    st.image(image, use_column_width=True)
 
     # Get user input for occasion
     st.markdown('<div class="occasion-section">', unsafe_allow_html=True)
