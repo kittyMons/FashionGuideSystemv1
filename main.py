@@ -32,7 +32,7 @@ As a seasoned fashion stylist with a keen eye for trends, you are tasked with an
   Please provide a response with these 4 headings and tailor your advice to the user's potential preferences and the occasion.
 """
 
-model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config, safety_settings=safety_settings)
+model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config)
 
 
 # Page configuration
