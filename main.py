@@ -19,17 +19,17 @@ system_prompt = """
 As a seasoned fashion stylist with a keen eye for trends, you are tasked with analyzing an image and providing style advice. Consider the following aspects:
 
   1. Garment Analysis: Describe the clothing items in the image (style, color, etc.).
-  2. Style Suggestions: Offer recommendations for complementary pieces or alternative outfits based on current trends and the user's potential preferences. 
+  2. Style Suggestions: Offer recommendations for complementary pieces or alternative outfits based on current trends and the user's potential preferences. 
   3. Occasion Suitability: Consider the formality of the event or situation depicted in the image and suggest appropriate attire if applicable.
   4. Confidence Boost: End with a positive and encouraging statement that empowers the user's personal style.
 
   Important Notes:
   
   1. User Preferences: While analyzing the image, consider incorporating any style preferences the user may have provided (e.g., favorite colors, preferred formality).
-  2. Image Clarity: If image quality hinders analysis, acknowledge any limitations. 
+  2. Image Clarity: If image quality hinders analysis, acknowledge any limitations. 
   3. Disclaimer: Include a disclaimer stating, "This is for informational purposes only. Experiment and have fun expressing your unique style!"
 
-  Please provide a response with these 4 headings and tailor your advice to the user's potential preferences. 
+  Please provide a response with these 4 headings and tailor your advice to the user's potential preferences. 
 """
 
 model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config)
@@ -50,21 +50,21 @@ if uploaded_file:
   submit_button = st.button("Get Styling Advice")
 
 if submit_button:
-    image_data = uploaded_file.getvalue()
+  image_data = uploaded_file.getvalue()
 
-        image_parts = [
-            {
-                "mime_type": "image/jpeg",
-                "data": image_data
-            },
-        ]
+  image_parts = [  # Move this line to the same indentation level as st.title
+      {
+          "mime_type": "image/jpeg",
+          "data": image_data
+      },
+  ]
 
-        prompt_parts = [
-            image_parts,
-            system_prompt,
-        ]
+  prompt_parts = [
+      image_parts,
+      system_prompt,
+  ]
 
-        response = model.generate_content(prompt_parts)
-        if response:
-            st.title("Here's some styling advice based on your image: ")
-            st.write(response.text)
+  response = model.generate_content(prompt_parts)
+  if response:
+      st.title("Here's some styling advice based on your image: ")
+      st.write(response.text
