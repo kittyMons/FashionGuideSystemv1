@@ -67,4 +67,4 @@ if submit_button:
   response = model.generate_content(prompt_parts)
   if response:
       st.title("Here's some styling advice based on your image: ")
-      st.write(response.text
+      st.write(response.text)
