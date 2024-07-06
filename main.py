@@ -116,12 +116,13 @@ if uploaded_file:
             f"The occasion for this outfit is {selected_occasion}. ",
             system_prompt,
         ]
-
-        response = model.generate_content(prompt_parts)
         container = st.container(border=True)
+
+       response = model.generate_content(prompt_parts)
         if response:
-            # container.write('<div class="response-section">', unsafe_allow_html=True)
-            container.write(st.markdown('<h2>Here\'s some styling advice based on your image and occasion:</h2>', unsafe_allow_html=True))
-            st.write(response.text)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container():
+                st.markdown('<div class="response-section">', unsafe_allow_html=True)
+                st.markdown('<h2>Here\'s some styling advice based on your image and occasion:</h2>', unsafe_allow_html=True)
+                st.markdown(f'<div>{response.text}</div>', unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
 
