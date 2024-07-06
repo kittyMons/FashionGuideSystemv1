@@ -69,16 +69,20 @@ uploaded_file = st.file_uploader(
 if uploaded_file:
     image_data = []
     for image in uploaded_file:
-        # Encode image to base64 format using the encode_image function
         encoded_image = encode_image(image)
         image_data.append(encoded_image)
 
     submit_button = st.button("Get Styling Advice")
 
     if submit_button:
+        # Print data types for debugging
+        print(type(image_data[0]))
+
+        # Check expected format from Google Generative AI documentation
         image_parts = [
             {"mime_type": "image/jpeg", "data": data} for data in image_data
         ]
+
 
         prompt_parts = [image_parts, system_prompt]
 
