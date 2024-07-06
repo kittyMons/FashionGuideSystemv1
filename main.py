@@ -3,7 +3,7 @@ import base64
 import google.generativeai as genai
 
 # Configure API keys
-genai.configure(api_key=st.secrets["GOOGLE_API_KEY"]["key"])
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
 st.title("What's your outfit today?")
 
