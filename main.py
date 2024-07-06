@@ -13,10 +13,6 @@ generation_config = {
     "max_output_tokens": 2048,  # Reduced for concise fashion advice
 }
 
-safety_settings = [
-    {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-    {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-]
 
 # Fashion Guider Prompt
 system_prompt = """
@@ -36,11 +32,11 @@ As a seasoned fashion stylist with a keen eye for trends, you are tasked with an
   Please provide a response with these 4 headings and tailor your advice to the user's potential preferences. 
 """
 
-model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config, safety_settings=safety_settings)
+model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config)
 
 
 # Page configuration
-st.set_page_config(page_title="Fashion Advisor ", page_icon=":sunglasses:")
+st.set_page_config(page_title="Fashion Advisor ", page_icon=":dress:")
 
 # Title
 st.title("Fashion Advisor ")
@@ -63,7 +59,7 @@ if uploaded_file:
         ]
 
         prompt_parts = [
-            image_parts[0],
+            image_parts,
             system_prompt,
         ]
 
