@@ -1,11 +1,33 @@
 import streamlit as st
 import base64
 import google.generativeai as genai
+from openai import OpenAI
 
-# Configure API keys
+client = OpenAI(api_key= st.secrets['OPENAI_API_KEY'])
+
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
 st.title("What's your outfit today?")
+
+def ai_suggestion(occasion,sysprompt):
+  fashion_response = client.chat.completions.create(
+      model="gpt-4o",
+      messages=[{
+          "role": "system",
+          "content":sysprompt
+
+      },
+       {
+          "role": "user",
+          "content": occasion
+      }],
+
+      max_tokens=50
+
+  )
+ 
+  fashion = fashion_response.choices[0].message.content
+  return fashion
 
 def ai_suggestion(occasion, uploaded_images):
     prompt = f"You are a fashion assistant. Based on the following items and the occasion ({occasion}), suggest an outfit and provide feedback on the uploaded outfits ({uploaded_images}):"
@@ -19,7 +41,7 @@ def ai_suggestion(occasion, uploaded_images):
             prompt += f"\nComment: Describe the outfit in the image and whether it's suitable for the occasion."
     
     # Call Gemini API for outfit suggestion
-    gemini_response = genai.chat.c(
+    gemini_response = genai.chat.(
         messages=[{"role": "user", "content": prompt}],
         model="gemini",
         max_tokens=40
