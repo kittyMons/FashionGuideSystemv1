@@ -49,8 +49,8 @@ if uploaded_file:
     st.image(image, caption=f"Image {index+1}")  # Dynamic caption based on index
   submit_button = st.button("Get Styling Advice")
 
-    if submit_button:
-        image_data = uploaded_file.getvalue()
+if submit_button:
+    image_data = uploaded_file.getvalue()
 
         image_parts = [
             {
