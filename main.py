@@ -45,8 +45,9 @@ st.subheader("Get Styling Inspiration for Your Next Look!")
 
 uploaded_file = st.file_uploader("Upload an image of your outfit or desired style", type=["png", "jpg", "jpeg"],accept_multiple_files=True)
 if uploaded_file:
-    st.image(uploaded_file, caption="Uploaded Image")
-    submit_button = st.button("Get Styling Advice")
+  for index, image in enumerate(uploaded_file):
+    st.image(image, caption=f"Image {index+1}")  # Dynamic caption based on index
+  submit_button = st.button("Get Styling Advice")
 
     if submit_button:
         image_data = uploaded_file.getvalue()
