@@ -72,7 +72,9 @@ As a seasoned fashion stylist with a keen eye for trends, you are tasked with an
   2. Style Suggestions: Offer recommendations for complementary pieces or alternative outfits based on current trends, the user's potential preferences, and the occasion. Include also what type of footwear that suitable.
   3. Occasion Suitability: Analyze the outfit's suitability for the provided occasion and suggest adjustments if necessary. Offer recommendations for adjustments to better suit the event's formality or theme.
   4. Confidence Boost: End with a positive and encouraging statement that empowers the user's personal style.
-  5. Accessories: Analyze the outfit and suggest some accessories that can be wear to enhance user;s preference. (belt / earrings / bangle / necklace etc)
+  5. Accessories: Analyze the outfit and suggest some accessories that can be wear to enhance user's preference. (belt / earrings / bangle / necklace etc)
+
+The images that will upload is just the image of the cloths without the model. So only tell the user the aspects without saying about the model. Focus on the outfits.
 """
 
 model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config)
