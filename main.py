@@ -2,17 +2,16 @@ import streamlit as st
 import pathlib as Path
 import google.generativeai as genai
 
-genai.configure(api_key=st.secrets['GOOGLE_API_KEY'])
+# Configure the API key (replace with your actual API key)
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-
-# Set up the model
+# Set up the model configuration
 generation_config = {
     "temperature": 0.7,  # Increased for more creative suggestions
     "top_p": 1,
     "top_k": 32,
     "max_output_tokens": 2048,  # Reduced for concise fashion advice
 }
-
 
 # Fashion Guider Prompt
 system_prompt = """
@@ -32,40 +31,45 @@ As a seasoned fashion stylist with a keen eye for trends, you are tasked with an
   Please provide a response with these 4 headings and tailor your advice to the user's potential preferences. 
 """
 
-model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config)
-
+# Create the Generative Model object
+model = genai.GenerativeModel(
+    model_name="gemini-pro-vision", generation_config=generation_config
+)
 
 # Page configuration
-st.set_page_config(page_title="Fashion Advisor ", page_icon=":dress:")
+st.set_page_config(page_title="Fashion Advisor", page_icon=":dress:")
 
 # Title
-st.title("Fashion Advisor ")
+st.title("Fashion Advisor")
 
 st.subheader("Get Styling Inspiration for Your Next Look!")
 
-uploaded_file = st.file_uploader("Upload an image of your outfit or desired style", type=["png", "jpg", "jpeg"],accept_multiple_files=True)
+# Upload images section
+uploaded_file = st.file_uploader(
+    "Upload an image of your outfit or desired style",
+    type=["png", "jpg", "jpeg"],
+    accept_multiple_files=True,
+)
+
+# Process uploaded images and generate styling advice (if any)
 if uploaded_file:
     image_data = []
     for image in uploaded_file:
         image_data.append(image.getvalue())
-  submit_button = st.button("Get Styling Advice")
 
-if submit_button:
-  image_data = uploaded_file.getvalue()
+    submit_button = st.button("Get Styling Advice")
 
-  image_parts = [  # Move this line to the same indentation level as st.title
-      {
-          "mime_type": "image/jpeg",
-          "data": image_data
-      },
-  ]
+    if submit_button:
+        image_parts = [
+            {"mime_type": "image/jpeg", "data": data} for data in image_data
+        ]
 
-  prompt_parts = [
-      image_parts,
-      system_prompt,
-  ]
+        prompt_parts = [image_parts, system_prompt]
 
-  response = model.generate_content(prompt_parts)
-  if response:
-      st.title("Here's some styling advice based on your image: ")
-      st.write(response.text)
+        response = model.generate_content(prompt_parts)
+        if response:
+            st.title("Here's some styling advice based on your image(s):")
+            st.write(response.text)
+            st.write(
+                "Disclaimer: This is for informational purposes only. Experiment and have fun expressing your unique style!"
+            )
