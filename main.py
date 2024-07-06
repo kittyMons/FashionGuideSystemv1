@@ -90,7 +90,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 if uploaded_file:
     image = Image.open(uploaded_file)
-    image = image.resize((100, 100))  # Resize image to 400x400 pixels
+    image = image.resize((400, 400))  # Resize image to 400x400 pixels
     st.image(image, use_column_width=True)
 
     # Get user input for occasion
