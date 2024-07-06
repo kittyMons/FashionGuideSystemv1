@@ -36,7 +36,7 @@ model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=
 
 
 # Page configuration
-st.set_page_config(page_title="Fashion Advisor ", page_icon=":sunglasses:")
+st.set_page_config(page_title="Fashion Advisor ", page_icon=":dress:")
 
 # Title
 st.title("Fashion Advisor ")
