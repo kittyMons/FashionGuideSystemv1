@@ -5,78 +5,69 @@ import google.generativeai as genai
 genai.configure(api_key=st.secrets['GOOGLE_API_KEY'])
 
 
-    # Set up the model
-generation_config = {  "temperature": 0.4,  "top_p": 1,  "top_k": 32,
-    "max_output_tokens": 4096,
-    }
+# Set up the model
+generation_config = {
+    "temperature": 0.7,  # Increased for more creative suggestions
+    "top_p": 1,
+    "top_k": 32,
+    "max_output_tokens": 2048,  # Reduced for concise fashion advice
+}
 
-safety_settings = [{"category": "HARM_CATEGORY_HARASSMENT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE" },
-    {"category": "HARM_CATEGORY_HATE_SPEECH",  "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-    {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",  "threshold": "BLOCK_MEDIUM_AND_ABOVE"  }, 
-    {   "category": "HARM_CATEGORY_DANGEROUS_CONTENT",   "threshold": "BLOCK_MEDIUM_AND_ABOVE" },
-    ]
+safety_settings = [
+    {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+    {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+]
 
-system_prompt=""" 
-     As a highly skilled medical practitioner specializing in image analysis, you are tasked with examining medical images for a renowned hospital.Your expertise is curcial in identifyning any anomalies, diseases, or health issues that may be present in the images.
+# Fashion Guider Prompt
+system_prompt = """
+As a seasoned fashion stylist with a keen eye for trends, you are tasked with analyzing an image and providing style advice. Consider the following aspects:
 
-     Your Responsibilities include:
+  1. Garment Analysis: Describe the clothing items in the image (style, color, etc.).
+  2. Style Suggestions: Offer recommendations for complementary pieces or alternative outfits based on current trends and the user's potential preferences. 
+  3. Occasion Suitability: Consider the formality of the event or situation depicted in the image and suggest appropriate attire if applicable.
+  4. Confidence Boost: End with a positive and encouraging statement that empowers the user's personal style.
 
-     1.Detailed Analysis: Thoroughly analyze each image, focusing on identifying any abnormal findings.
-     2.Findings Report: Document all observed anomalies or signs of disease.Clearly articulate these findings in a structured format.
-     3.Recommendation and Next Steps: Based on your analysis, suggest potential next steps, including further tests or treatments as applicable.
-     4.Treatment Suggestions: If appropriate, recommend possible treatment options or interventions.
+  Important Notes:
+  
+  1. User Preferences: While analyzing the image, consider incorporating any style preferences the user may have provided (e.g., favorite colors, preferred formality).
+  2. Image Clarity: If image quality hinders analysis, acknowledge any limitations. 
+  3. Disclaimer: Include a disclaimer stating, "This is for informational purposes only. Experiment and have fun expressing your unique style!"
 
-     Important Notes:
-
-     1.Scope of Response: Only respond if the image pertains to human health issues.
-     2.Clarity of Image: In cases where image quality impedes clear analysis, note that certain aspects are 'Unable to be determined based on the provided image.'
-     3.Disclaimer:Accompany your analysis with the disclaimer :" Consult with a Doctor before making any decisions."
-     4.Your insights are invaluable in guiding clinical decisions. Please proceed with the analysis adhering to the structured approach outlined above.
-
-     Please provide me an output response with these 4 headings and also provide output response according to the Disclaimer
-     """
+  Please provide a response with these 4 headings and tailor your advice to the user's potential preferences. 
+"""
 
 model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config, safety_settings=safety_settings)
 
 
+# Page configuration
+st.set_page_config(page_title="Fashion Advisor ", page_icon=":sunglasses:")
 
+# Title
+st.title("Fashion Advisor ")
 
+st.subheader("Get Styling Inspiration for Your Next Look!")
 
-
-    #page configuration
-st.set_page_config(page_title="VitalImage Analytics",page_icon=":robot")
-
-    #title
-st.title("Vital Image Analytics 👩‍⚕️🩺")
-
-st.subheader("An application designed to assist in the identification of medical images")
-
-uploaded_file=st.file_uploader("Upload the medical image for analysis", type=["png","jpg","jpeg"])
+uploaded_file = st.file_uploader("Upload an image of your outfit or desired style", type=["png", "jpg", "jpeg"])
 if uploaded_file:
     st.image(uploaded_file, caption="Uploaded Image")
-    submit_button=st.button("Generate the Analysis")
+    submit_button = st.button("Get Styling Advice")
 
     if submit_button:
-        image_data=uploaded_file.getvalue()
+        image_data = uploaded_file.getvalue()
 
-        image_parts=[
+        image_parts = [
             {
-                "mime_type":"image/jpeg",
-                "data":image_data
+                "mime_type": "image/jpeg",
+                "data": image_data
             },
         ]
 
-        prompt_parts=[
+        prompt_parts = [
             image_parts[0],
             system_prompt,
         ]
 
-        response=model.generate_content(prompt_parts)
+        response = model.generate_content(prompt_parts)
         if response:
-            st.title("Here is the analysis based on your image: ")
+            st.title("Here's some styling advice based on your image: ")
             st.write(response.text)
-
-
-
-
