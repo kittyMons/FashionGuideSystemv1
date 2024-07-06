@@ -47,7 +47,7 @@ st.title("Fashion Advisor ")
 
 st.subheader("Get Styling Inspiration for Your Next Look!")
 
-uploaded_file = st.file_uploader("Upload an image of your outfit or desired style", type=["png", "jpg", "jpeg"])
+uploaded_file = st.file_uploader("Upload an image of your outfit or desired style", type=["png", "jpg", "jpeg"],accept_multiple_files=True)
 if uploaded_file:
     st.image(uploaded_file, caption="Uploaded Image")
     submit_button = st.button("Get Styling Advice")
