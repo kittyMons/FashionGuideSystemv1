@@ -1,9 +1,8 @@
 import streamlit as st
+import pathlib as Path
 import google.generativeai as genai
-from PIL import Image
-import io
 
-# Configure API keys
+# Configure the API key
 genai.configure(api_key=st.secrets['GOOGLE_API_KEY'])
 
 # Set up the model
@@ -16,45 +15,49 @@ generation_config = {
 
 # Set page configuration
 st.set_page_config(
-    page_title="Fashion Advisor",
+    page_title="Outfit Suggestion App",
     page_icon="👗",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for background color and other styles
+# Custom CSS for styling
 st.markdown(
     """
     <style>
     .stApp {
-        background-color: #f8f5f2;
-        color: #2c3e50;
+        background-color: #F8F4F4;
+        font-family: 'Arial', sans-serif;
     }
-    .title {
+    .main-title {
+        color: #3E3D3D;
         font-size: 3em;
-        color: #34495e;
         text-align: center;
-        margin-top: 20px;
+        margin-bottom: 0.5em;
     }
-    .subheader {
+    .sub-title {
+        color: #3E3D3D;
         font-size: 1.5em;
-        color: #7f8c8d;
         text-align: center;
-        margin-top: -10px;
+        margin-bottom: 1em;
     }
-    .file-uploader {
-        margin-top: 20px;
+    .upload-section {
+        text-align: center;
+        margin-bottom: 1.5em;
     }
-    .selectbox {
-        margin-top: 20px;
+    .occasion-section {
+        text-align: center;
+        margin-bottom: 1.5em;
     }
-    .button {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
+    .button-section {
+        text-align: center;
     }
-    .result {
-        margin-top: 30px;
+    .response-section {
+        margin-top: 2em;
+        padding: 1em;
+        background-color: #FFF;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     </style>
     """,
@@ -69,27 +72,31 @@ As a seasoned fashion stylist with a keen eye for trends, you are tasked with an
   2. Style Suggestions: Offer recommendations for complementary pieces or alternative outfits based on current trends, the user's potential preferences, and the occasion.
   3. Occasion Suitability: Analyze the outfit's suitability for the provided occasion and suggest adjustments if necessary. Offer recommendations for adjustments to better suit the event's formality or theme.
   4. Confidence Boost: End with a positive and encouraging statement that empowers the user's personal style.
-
-  Please provide a response with these 4 headings and tailor your advice to the user's potential preferences and the occasion.
 """
 
 model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config)
 
 # Title
-st.markdown('<div class="title">Fashion Advisor</div>', unsafe_allow_html=True)
-st.markdown('<div class="subheader">Get Styling Inspiration for Your Next Look!</div>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">Fashion Advisor 👗</h1>', unsafe_allow_html=True)
+st.markdown('<h2 class="sub-title">Get Styling Inspiration for Your Next Look!</h2>', unsafe_allow_html=True)
 
-uploaded_file = st.file_uploader("Upload an image of your outfit or desired style", type=["png", "jpg", "jpeg"], className="file-uploader")
+# Upload Image
+st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+uploaded_file = st.file_uploader("Upload an image of your outfit or desired style", type=["png", "jpg", "jpeg"])
+st.markdown('</div>', unsafe_allow_html=True)
+
 if uploaded_file:
-    # Display uploaded image
-    image = Image.open(io.BytesIO(uploaded_file.getvalue()))
-    st.image(image, caption='Uploaded Image', use_column_width=True)
+    st.image(uploaded_file, use_column_width=True)
 
     # Get user input for occasion
+    st.markdown('<div class="occasion-section">', unsafe_allow_html=True)
     occasion_options = ("Casual", "Formal", "Work", "Party", "Date", "Other")
-    selected_occasion = st.selectbox("Select the occasion for this outfit:", occasion_options, className="selectbox")
+    selected_occasion = st.selectbox("Select the occasion for this outfit:", occasion_options)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    submit_button = st.button("Get Styling Advice", className="button")
+    st.markdown('<div class="button-section">', unsafe_allow_html=True)
+    submit_button = st.button("Get Styling Advice")
+    st.markdown('</div>', unsafe_allow_html=True)
 
     if submit_button:
         image_data = uploaded_file.getvalue()
@@ -109,6 +116,7 @@ if uploaded_file:
 
         response = model.generate_content(prompt_parts)
         if response:
-            st.markdown('<div class="result"><h2>Here\'s some styling advice based on your image and occasion:</h2></div>', unsafe_allow_html=True)
+            st.markdown('<div class="response-section">', unsafe_allow_html=True)
+            st.markdown('<h2>Here\'s some styling advice based on your image and occasion:</h2>', unsafe_allow_html=True)
             st.write(response.text)
-
+            st.markdown('</div>', unsafe_allow_html=True)
