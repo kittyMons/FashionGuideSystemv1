@@ -41,7 +41,7 @@ def ai_suggestion(occasion, uploaded_images):
             prompt += f"\nComment: Describe the outfit in the image and whether it's suitable for the occasion."
     
     # Call Gemini API for outfit suggestion
-    gemini_response = genai.chat.(
+    gemini_response = genai.chat(
         messages=[{"role": "user", "content": prompt}],
         model="gemini",
         max_tokens=40
