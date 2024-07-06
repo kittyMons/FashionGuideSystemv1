@@ -31,15 +31,6 @@ def ai_suggestion(occasion,sysprompt):
 
 def ai_suggestion(occasion, uploaded_images):
     prompt = f"You are a fashion assistant. Based on the following items and the occasion ({occasion}), suggest an outfit and provide feedback on the uploaded outfits ({uploaded_images}):"
-
-    # Append comments about each uploaded image
-    if uploaded_images:
-        prompt += "\n\n**Uploaded Outfits:**"
-        for idx, image in enumerate(uploaded_images):
-            prompt += f"\n\n**Uploaded Image {idx+1}:**"
-            prompt += f"\n![Uploaded Image {idx+1}]({image})"
-            prompt += f"\nComment: Describe the outfit in the image and whether it's suitable for the occasion."
-    
     # Call Gemini API for outfit suggestion
     gemini_response = genai.chat(
         messages=[{"role": "user", "content": prompt}],
