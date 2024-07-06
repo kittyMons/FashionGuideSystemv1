@@ -13,6 +13,26 @@ generation_config = {
   "max_output_tokens": 2048,  # Reduced for concise fashion advice
 }
 
+# Set page configuration
+st.set_page_config(
+    page_title="Outfit Suggestion App",
+    page_icon="👗",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Custom CSS for background color
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #C9A9A6;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Fashion Guider Prompt
 system_prompt = """
@@ -27,16 +47,12 @@ As a seasoned fashion stylist with a keen eye for trends, you are tasked with an
 
   1. User Preferences: While analyzing the image, consider incorporating any style preferences the user may have provided (e.g., favorite colors, preferred formality).
   2. Image Clarity: If image quality hinders analysis, acknowledge any limitations.
-  3. Disclaimer: Include a disclaimer stating, "This is for informational purposes only. Experiment and have fun expressing your unique style!"
+ 
 
   Please provide a response with these 4 headings and tailor your advice to the user's potential preferences and the occasion.
 """
 
 model = genai.GenerativeModel(model_name="gemini-pro-vision", generation_config=generation_config)
-
-
-# Page configuration
-st.set_page_config(page_title="Fashion Advisor ", page_icon=":dress:")
 
 # Title
 st.title("Fashion Advisor ")
@@ -45,10 +61,10 @@ st.subheader("Get Styling Inspiration for Your Next Look!")
 
 uploaded_file = st.file_uploader("Upload an image of your outfit or desired style", type=["png", "jpg", "jpeg"])
 if uploaded_file:
-  st.image(uploaded_file, caption="Uploaded Image")
+  st.image(uploaded_file)
 
   # Get user input for occasion
-  occasion_options = ("Casual", "Formal", "Work", "Party", "Other")
+  occasion_options = ("Casual", "Formal", "Work", "Party", "Date","Other")
   selected_occasion = st.selectbox("Select the occasion for this outfit:", occasion_options)
 
   submit_button = st.button("Get Styling Advice")
