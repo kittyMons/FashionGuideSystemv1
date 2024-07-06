@@ -117,8 +117,8 @@ if uploaded_file:
             system_prompt,
         ]
         container = st.container(border=True)
-
-       response = model.generate_content(prompt_parts)
+        
+        response = model.generate_content(prompt_parts)
         if response:
             with st.container():
                 st.markdown('<div class="response-section">', unsafe_allow_html=True)
