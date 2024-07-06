@@ -7,7 +7,25 @@ client = OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
 
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-st.title("What's your outfit today?")
+st.set_page_config(
+    page_title="Outfit Suggestion App",
+    page_icon="👗",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #C9A9A6;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.title("👗 What's your outfit today?")
 
 def ai_suggestion(occasion, prompt):
   """
