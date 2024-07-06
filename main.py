@@ -8,7 +8,7 @@ genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 st.title("What's your outfit today?")
 
 def ai_suggestion(occasion, uploaded_images):
-    prompt = f"You are a fashion assistant. Based on the following items and the occasion ({occasion}), suggest an outfit and provide feedback on the uploaded outfits:"
+    prompt = f"You are a fashion assistant. Based on the following items and the occasion ({occasion}), suggest an outfit and provide feedback on the uploaded outfits ({uploaded_images}):"
 
     # Append comments about each uploaded image
     if uploaded_images:
@@ -19,7 +19,7 @@ def ai_suggestion(occasion, uploaded_images):
             prompt += f"\nComment: Describe the outfit in the image and whether it's suitable for the occasion."
     
     # Call Gemini API for outfit suggestion
-    gemini_response = genai.chat(
+    gemini_response = genai.chat.c(
         messages=[{"role": "user", "content": prompt}],
         model="gemini",
         max_tokens=40
